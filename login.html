@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300BFFF'%3E%3Cpath d='M12 2a10 10 0 100 20 10 10 0 000-20zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E" type="image/svg+xml">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Login to StraitUp</h1>
+        <form id="loginForm">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="your.name@srmist.edu.in">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="••••••••">
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <p class="form-footer">Don't have an account? <a href="register.html">Register here</a></p>
+        <p class="form-footer"><a href="#">Forgot password?</a></p>
+    </div>
+
+    <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Login Status</h2>
+            <p id="modalDescription">Please wait while we verify your credentials...</p>
+            <button class="btn btn-primary" id="modalActionBtn">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

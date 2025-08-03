@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraightUp - Food Activities</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF69B4'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3C/svg%3E" type="image/svg+xml">
+</head>
+<body>
+    <button id="theme-toggle" class="btn btn-secondary theme-toggle-button" aria-label="Toggle dark/light mode">
+        🌙
+    </button>
+
+    <div class="food-container">
+        <header class="food-header">
+            <h1 class="food-title">Foodie Adventures!</h1>
+            <p class="food-tagline">Craving something specific? Find a crew to grab a bite with.</p>
+        </header>
+
+        <section class="incampus-restaurants">
+            <h2>In-Campus Restaurants</h2>
+            <div class="place-grid">
+                <a href="#" class="food-place-card">
+                    <img src="emopizza_logo.png" alt="Emo Pizza logo" class="place-logo">
+                    <h3>Emo Pizza</h3>
+                    <p>For those classic pizza cravings & late-night study fuel.</p>
+                </a>
+                <a href="#" class="food-place-card">
+                    <img src="subway_logo.png" alt="Subway logo" class="place-logo">
+                    <h3>Subway</h3>
+                    <p>Build your own fresh subs for a quick, healthy-ish bite.</p>
+                </a>
+                <a href="#" class="food-place-card">
+                    <img src="sliceoflife_logo.png" alt="Slice of Life logo" class="place-logo">
+                    <h3>Slice of Life</h3>
+                    <p>Cozy cafe vibes, great coffee & quick bites. The Genz hangout!</p>
+                </a>
+                <a href="#" class="food-place-card">
+                    <img src="chaikings_logo.png" alt="Chai Kings logo" class="place-logo">
+                    <h3>Chai Kings</h3>
+                    <p>Your go-to for refreshing chai, coffee, and quick snacks.</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="other-food-spots">
+            <h2>Other Food Spots & Snacks</h2>
+            <div class="place-grid">
+                <a href="#" class="food-place-card">
+                    <span class="place-icon">🍚</span>
+                    <h3>Java</h3>
+                    <p>Hearty meals, variety of cuisines, and everyday favorites.</p>
+                </a>
+                <a href="#" class="food-place-card">
+                    <span class="place-icon">🥗</span>
+                    <h3>Evergreen</h3>
+                    <p>Healthy and delicious options, from salads to fresh juices.</p>
+                </a>
+                <a href="#" class="food-place-card">
+                    <span class="place-icon">🍗</span>
+                    <h3>Zinger Butty</h3>
+                    <p>Crispy, spicy, and satisfying chicken burgers. A campus classic!</p>
+                </a>
+            </div>
+        </section>
+
+        <footer class="food-footer">
+            <p>&copy; 2025 StraightUp. Crave. Connect. Conquer.</p>
+            <a href="dashboard.html" class="btn btn-secondary btn-small">Back to Dashboard</a>
+        </footer>
+    </div>
+
+    <div id="foodTimingModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="foodModalTitle" aria-describedby="foodModalDescription">
+        <div class="modal-content">
+            <span class="close-button" id="closeFoodModal">&times;</span>
+            <h2 id="foodModalTitle">Set Time for [Restaurant]</h2>
+            <form id="foodTimingForm">
+                <label for="food-time">Preferred Time:</label>
+                <input type="time" id="food-time" name="time">
+
+                <label for="food-details">More Details:</label>
+                <textarea id="food-details" name="details" rows="3" placeholder="e.g., Looking for a pizza buddy around 7 PM."></textarea>
+
+                <button type="submit" class="btn btn-primary">Confirm & Find</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

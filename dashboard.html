@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF69B4'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="theme-toggle" class="btn btn-secondary theme-toggle-button" aria-label="Toggle dark/light mode">
+        🌙
+    </button>
+
+    <button id="sidebar-toggle" class="sidebar-toggle-button" aria-label="Open sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <button class="close-sidebar-button" aria-label="Close sidebar">&times;</button>
+        </div>
+        <div class="profile-completion-card">
+            <a href="completeregistration.html" class="profile-link">
+                <div class="profile-image-container">
+                    <img src="https://via.placeholder.com/80/FF69B4/FFFFFF?text=User" alt="User Profile" class="profile-image">
+                </div>
+                <div class="profile-info">
+                    <p class="profile-name">User Name</p>
+                    <p class="completion-status">Registration 50% Complete</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="sidebar-nav-item"><i class="fas fa-tasks"></i> My Tasks</a></li>
+                <li><a href="sportsactivities.html" class="sidebar-nav-item"><i class="fas fa-running"></i> Sports</a></li>
+                <li><a href="food.html" class="sidebar-nav-item"><i class="fas fa-utensils"></i> Food</a></li>
+                <li><a href="#" class="sidebar-nav-item"><i class="fas fa-book"></i> Library</a></li>
+                <li><a href="#" class="sidebar-nav-item"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="faq.html" class="sidebar-nav-item"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                <li><a href="aboutus.html" class="sidebar-nav-item"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+             <a href="aboutus.html" class="btn btn-secondary meet-developers-sidebar">Meet the Developers</a>
+            <button class="btn btn-primary" id="logoutBtnSidebar">Logout</button>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <div id="main-content-wrapper" class="main-content-wrapper">
+        <div class="dashboard-container">
+            <header class="dashboard-header">
+                <h1 class="dashboard-title">Welcome to StraitUp, <span id="userName">User</span>!</h1>
+                <p class="dashboard-tagline">Your hub for connecting with the SRM KTR community.</p>
+            </header>
+
+            <section class="about-straightup">
+                <h2>About StraitUp</h2>
+                <p>StraitUp helps you easily find and connect with fellow SRM KTR students for shared activities and interests. Whether you're looking for a movie buddy, a sports teammate, a study partner, or just someone to grab a bite with, StraitUp makes it simple to discover your crew and make new friends on campus!</p>
+            </section>
+
+            <section class="activity-categories">
+                <h2>Explore Activities</h2>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <span class="category-icon">🎬</span>
+                        <h3>Movies</h3>
+                        <p>Find someone to catch the latest flick or rewatch classics.</p>
+                    </div>
+                    <a href="sportsactivities.html" class="category-card">
+                        <span class="category-icon">⚽</span>
+                        <h3>Sports</h3>
+                        <p>Team up for a game, find a gym buddy, or cheer on your favorite team.</p>
+                    </a>
+                    <div class="category-card">
+                        <span class="category-icon">📚</span>
+                        <h3>Library</h3>
+                        <p>Discover study groups, book clubs, or quiet study companions.</p>
+                    </div>
+                    <a href="food.html" class="category-card">
+                        <span class="category-icon">🍔</span>
+                        <h3>Food</h3>
+                        <p>Grab a meal, explore new cafes, or find a late-night snack buddy.</p>
+                    </a>
+                </div>
+            </section>
+
+            <footer class="dashboard-footer">
+                <p>&copy; 2025 StraitUp. All rights reserved.</p>
+                <div class="contact-us-info">
+                    <p>Contact Us:</p>
+                    <p><a href="mailto:kb8360@srmist.edu.in">kb8360@srmist.edu.in</a></p>
+                    <p><a href="mailto:fs2284@srmist.edu.in">fs2284@srmist.edu.in</a></p>
+                </div>
+                <div class="footer-buttons">
+                    <a href="feedback.html" class="btn btn-secondary">Give Feedback</a>
+                    <a href="aboutus.html" class="btn btn-secondary">Meet the Developers</a>
+                    <button class="btn btn-primary" id="logoutBtn">Logout</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

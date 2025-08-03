@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Complete Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF69B4'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E" type="image/svg+xml">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Complete Your Profile</h1>
+        <p class="form-description">Just a few more details to help us personalize your experience!</p>
+        <form id="completeRegistrationForm">
+            <!-- Pre-filled and disabled fields -->
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" value="John Doe" disabled>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" value="john.doe@srmist.edu.in" disabled>
+
+            <label for="regNo">Registration Number</label>
+            <input type="text" id="regNo" name="regNo" value="RA123456789" disabled>
+
+            <!-- New fields for completion -->
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required min="17" max="99" placeholder="e.g., 20">
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="hobbies">Hobbies & Interests</label>
+            <textarea id="hobbies" name="hobbies" rows="4" placeholder="Tell us about your hobbies, favorite sports, clubs, etc. (e.g., Reading, Football, Photography)"></textarea>
+
+            <button type="submit" class="btn btn-primary">Complete Registration</button>
+        </form>
+        <p class="form-footer"><a href="dashboard.html">Back to Dashboard</a></p>
+    </div>
+
+    <!-- Modal for status messages -->
+    <div id="statusModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Profile Update Status</h2>
+            <p id="modalDescription">Please wait while we update your profile...</p>
+            <button class="btn btn-primary modal-ok-btn" id="modalActionBtn">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- Re-using script.js for modal logic if needed -->
+</body>
+</html>

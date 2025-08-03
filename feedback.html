@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Feedback</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF69B4'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <!-- Font Awesome for star ratings -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Give Us Your Feedback</h1>
+        <p class="form-description">We'd love to hear your thoughts and suggestions to improve StraitUp!</p>
+        <form id="feedbackForm">
+            <label for="feedbackType">Feedback Type</label>
+            <select id="feedbackType" name="feedbackType" required>
+                <option value="">Select a type...</option>
+                <option value="bug">Bug Report</option>
+                <option value="feature">Feature Request</option>
+                <option value="general">General Suggestion</option>
+                <option value="compliment">Compliment</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="rating">Overall Rating</label>
+            <div class="rating-stars" id="ratingStars">
+                <i class="far fa-star" data-value="1"></i>
+                <i class="far fa-star" data-value="2"></i>
+                <i class="far fa-star" data-value="3"></i>
+                <i class="far fa-star" data-value="4"></i>
+                <i class="far fa-star" data-value="5"></i>
+            </div>
+            <input type="hidden" id="rating" name="rating" value="0"> <!-- Hidden input to store rating value -->
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="e.g., Issue with login, New activity idea" required>
+
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comments" rows="6" placeholder="Please provide detailed feedback here..." required></textarea>
+
+            <label for="feedbackName">Your Name (Optional)</label>
+            <input type="text" id="feedbackName" name="feedbackName" placeholder="e.g., John Doe">
+
+            <label for="feedbackEmail">Your Email (Optional)</label>
+            <input type="email" id="feedbackEmail" name="feedbackEmail" placeholder="e.g., your.email@example.com">
+
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+        <p class="form-footer"><a href="dashboard.html">Back to Dashboard</a></p>
+    </div>
+
+    <!-- Modal for status messages -->
+    <div id="statusModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2 id="modalTitle">Feedback Submission</h2>
+            <p id="modalDescription">Sending your feedback...</p>
+            <button class="btn btn-primary modal-ok-btn" id="modalActionBtn">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

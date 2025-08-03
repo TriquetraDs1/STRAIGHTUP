@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraightUp - Sports Activities</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon: Using a standard icon, adjust if your main theme color changes -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF69B4'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm6 4h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E" type="image/svg+xml">
+</head>
+<body>
+    <!-- Dark/Light Theme Toggle Button -->
+    <button id="theme-toggle" class="btn btn-secondary theme-toggle-button" aria-label="Toggle dark/light mode">
+        🌙
+    </button>
+
+    <div class="sports-container">
+        <header class="sports-header">
+            <h1 class="sports-title">Find Your Sport Crew!</h1>
+            <p class="sports-tagline">Select a sport, add your availability, and connect with players.</p>
+        </header>
+
+        <section class="sports-activities-section">
+            <div class="sports-grid">
+                <!-- Basketball Card -->
+                <div class="sport-activity-card">
+                    <span class="sport-icon">🏀</span>
+                    <h3>Basketball</h3>
+                    <form class="sport-form" data-sport="Basketball">
+                        <label for="basketball-time">Preferred Time:</label>
+                        <input type="time" id="basketball-time" name="time">
+
+                        <label for="basketball-details">More Details:</label>
+                        <textarea id="basketball-details" name="details" rows="3" placeholder="e.g., Looking for a casual pickup game at 5 PM, all skill levels welcome!"></textarea>
+
+                        <button type="submit" class="btn btn-primary btn-small">Find Players</button>
+                    </form>
+                </div>
+
+                <!-- Cricket Card -->
+                <div class="sport-activity-card">
+                    <span class="sport-icon">🏏</span>
+                    <h3>Cricket</h3>
+                    <form class="sport-form" data-sport="Cricket">
+                        <label for="cricket-time">Preferred Time:</label>
+                        <input type="time" id="cricket-time" name="time">
+
+                        <label for="cricket-details">More Details:</label>
+                        <textarea id="cricket-details" name="details" rows="3" placeholder="e.g., Need a bowler for a friendly match this weekend."></textarea>
+
+                        <button type="submit" class="btn btn-primary btn-small">Find Players</button>
+                    </form>
+                </div>
+
+                <!-- Football Card -->
+                <div class="sport-activity-card">
+                    <span class="sport-icon">⚽</span>
+                    <h3>Football</h3>
+                    <form class="sport-form" data-sport="Football">
+                        <label for="football-time">Preferred Time:</label>
+                        <input type="time" id="football-time" name="time">
+
+                        <label for="football-details">More Details:</label>
+                        <textarea id="football-details" name="details" rows="3" placeholder="e.g., 5-a-side game at the campus ground, looking for defenders."></textarea>
+
+                        <button type="submit" class="btn btn-primary btn-small">Find Players</button>
+                    </form>
+                </div>
+
+                <!-- Badminton Card -->
+                <div class="sport-activity-card">
+                    <span class="sport-icon">🏸</span>
+                    <h3>Badminton</h3>
+                    <form class="sport-form" data-sport="Badminton">
+                        <label for="badminton-time">Preferred Time:</label>
+                        <input type="time" id="badminton-time" name="time">
+
+                        <label for="badminton-details">More Details:</label>
+                        <textarea id="badminton-details" name="details" rows="3" placeholder="e.g., Doubles partner needed for a casual game at the indoor court."></textarea>
+
+                        <button type="submit" class="btn btn-primary btn-small">Find Players</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="sports-footer">
+            <p>&copy; 2025 StraightUp. Connect & Play!</p>
+            <a href="dashboard.html" class="btn btn-secondary btn-small">Back to Dashboard</a>
+        </footer>
+    </div>
+
+    <!-- Link to the shared script.js for all page functionalities -->
+    <script src="script.js"></script>
+    <script>
+        // Specific JavaScript for this page's forms
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.sport-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent actual form submission
+
+                    const sportName = this.dataset.sport; // Get sport name from data-sport attribute
+                    const time = this.querySelector('input[type="time"]').value;
+                    const details = this.querySelector('textarea').value.trim();
+
+                    let message = `Looking for players for ${sportName}`;
+                    if (time) {
+                        message += ` at ${time}`;
+                    }
+                    if (details) {
+                        message += ` with details: "${details}"`;
+                    }
+                    message += `\n\n(In a real app, this would send data to a backend to find matches!)`;
+
+                    alert(message); // Use alert for now, replace with a custom modal later
+                    this.reset(); // Clear the form fields
+                });
+            });
+        });
+    </script>
+</body>
+</html>
