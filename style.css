@@ -110,7 +110,7 @@ body.dark-mode {
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensure consistent box model */
     font-family: 'Nunito', sans-serif;
 }
 
@@ -147,8 +147,8 @@ body::before {
     width: 120vw;
     height: 120vh;
     background: radial-gradient(circle at 20% 70%, rgba(255,179,225,0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 30%, rgba(160,233,255,0.4) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255,242,127,0.2) 0%, transparent 70%);
+                        radial-gradient(circle at 80% 30%, rgba(160,233,255,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(255,242,127,0.2) 0%, transparent 70%);
     top: -10%;
     left: -10%;
     animation: backgroundMove 25s infinite alternate ease-in-out;
@@ -158,8 +158,8 @@ body::before {
 /* Adjust body::before for dark mode (if it's intended to stay) */
 body.dark-mode::before {
     background: radial-gradient(circle at 20% 70%, rgba(138,43,226,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 30%, rgba(0,255,255,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255,215,0,0.1) 0%, transparent 70%);
+                        radial-gradient(circle at 80% 30%, rgba(0,255,255,0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(255,215,0,0.1) 0%, transparent 70%);
 }
 
 @keyframes backgroundMove {
@@ -409,7 +409,7 @@ body.dark-mode .form-container:hover {
 .form-container input[type="password"],
 .form-container input[type="file"],
 .form-container input[type="number"], /* Added for age */
-.form-container input[type="date"],   /* Added for DOB */
+.form-container input[type="date"],    /* Added for DOB */
 .form-container select,                /* Added for feedback type */
 .form-container textarea               /* Added for hobbies/comments */
 {
@@ -1497,6 +1497,114 @@ body.dark-mode .food-place-card:hover {
     color: #FFC107; /* Slightly different gold on hover for filled stars */
 }
 
+
+/* --- CAROUSEL SPECIFIC STYLES (UPDATED FOR ROBUSTNESS & GAP) --- */
+.carousel-container {
+    position: relative;
+    margin: 0 auto;
+    max-width: 1000px; /* Kept wide for overall space */
+    padding-left: 60px; /* Space for the left arrow */
+    padding-right: 60px; /* Space for the right arrow */
+}
+
+#now-showing-carousel,
+#coming-soon-carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem; /* For scrollbar if visible */
+
+    /* DECREASED GAP HERE */
+    gap: 1rem; /* Reduced gap between cards from 1.5rem to 1rem */
+
+    margin-left: -60px; /* Matches padding-left of carousel-container */
+    margin-right: -60px; /* Matches padding-right of carousel-container */
+    
+    padding-left: 60px; /* Makes content start inside carousel-container's padding */
+    padding-right: 60px; /* Makes content end inside carousel-container's padding */
+}
+
+/* Hide scrollbar */
+#now-showing-carousel::-webkit-scrollbar,
+#coming-soon-carousel::-webkit-scrollbar {
+    display: none;
+}
+#now-showing-carousel,
+#coming-soon-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.movie-card {
+    /* Adjusted calc() for the new 1rem gap */
+    flex: 0 0 calc(33.3333% - (1rem * 2 / 3)); /* 3 cards, accounting for 2 gaps (1rem each) distributed among 3 cards */
+    min-width: calc(33.3333% - (1rem * 2 / 3)); /* Ensures width adherence */
+    scroll-snap-align: start;
+    background: var(--color-building-cream);
+    border-radius: var(--border-radius-soft);
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+body.dark-mode .movie-card {
+    background: var(--color-building-cream);
+    border-color: rgba(255,255,255,0.08);
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15), 0 0 10px var(--glow-color-soft);
+}
+
+.movie-card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20; /* Ensure it's above everything */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    color: var(--text-primary-dark);
+}
+body.dark-mode .carousel-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--text-primary-dark);
+}
+
+.carousel-button:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+body.dark-mode .carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-button.prev {
+    left: 10px; /* Position within the 60px padding, allowing 10px buffer */
+}
+
+.carousel-button.next {
+    right: 10px; /* Position within the 60px padding, allowing 10px buffer */
+}
+
+
 /* --- Responsive Design (Adjustments for various screen sizes) --- */
 @media (max-width: 768px) {
     /* Homepage Specific Adjustments */
@@ -1631,6 +1739,28 @@ body.dark-mode .food-place-card:hover {
     .button-group {
         gap: 0.8rem;
     }
+
+    /* Movie page specific adjustments for 2 cards */
+    .carousel-container {
+        padding-left: 40px; /* Adjusted padding for smaller screens */
+        padding-right: 40px; /* Adjusted padding for smaller screens */
+    }
+    #now-showing-carousel,
+    #coming-soon-carousel {
+        /* Adjust negative margins and inner padding for the new gap */
+        margin-left: -40px;
+        margin-right: -40px;
+        padding-left: 40px;
+        padding-right: 40px;
+        gap: 0.5rem; /* New gap for 2-card layout */
+    }
+    .movie-card {
+        /* Adjusted calc() for the new 0.75rem gap (for 2 cards) */
+        flex: 0 0 calc(50% - (0.75rem / 2)); /* 2 cards, accounting for 1 gap (0.75rem) */
+        min-width: calc(50% - (0.75rem / 2));
+    }
+    .carousel-button.prev { left: 5px; } /* Adjusted to be inside padding */
+    .carousel-button.next { right: 5px; } /* Adjusted to be inside padding */
 }
 
 @media (max-width: 480px) {
@@ -1790,4 +1920,25 @@ body.dark-mode .food-place-card:hover {
     .button-group .btn {
         width: 100%;
     }
+
+    /* Movie page specific adjustments for 1 card */
+    .carousel-container {
+        padding-left: 30px; /* Adjusted padding for very small screens */
+        padding-right: 30px; /* Adjusted padding for very small screens */
+    }
+    #now-showing-carousel,
+    #coming-soon-carousel {
+        /* Adjust negative margins and inner padding for the new gap */
+        margin-left: -30px;
+        margin-right: -30px;
+        padding-left: 30px;
+        padding-right: 30px;
+        gap: 0.5rem; /* New gap for 1-card layout */
+    }
+    .movie-card {
+        flex: 0 0 100%; /* 1 card per row */
+        min-width: 100%;
+    }
+    .carousel-button.prev { left: 0px; }
+    .carousel-button.next { right: 0px; }
 }

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Matchmaking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter and Comfortaa fonts from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables: Color Palette & Global Settings --- */
+        :root {
+            /* -- Light Mode Colors (default) -- */
+            --bg-gradient-start: #A0E9FF; /* Light Blue */
+            --bg-gradient-end: #FFB3E1; /* Bubblegum Pink */
+
+            --text-primary-dark: #333333;
+            --text-secondary-light: #FFFFFF;
+            --text-muted: #666;
+
+            --button-primary-bg: #FF69B4; /* Hot Pink */
+            --button-primary-text: var(--text-secondary-light);
+
+            --button-secondary-bg-transparent: rgba(255, 255, 255, 0.2);
+            --button-secondary-text: var(--text-primary-dark);
+
+            /* Form Element Colors (specific to register/login pages) */
+            --form-bg-color: #FFFFFF; /* White background for forms/modals */
+            --form-border-color: #ddd;
+            --form-label-color: #555;
+            --form-placeholder-color: #aaa;
+            --input-bg-transparent: #FFFFFF; /* Default for light mode inputs */
+
+            /* Dashboard Specific Colors (used for dashboard page elements) */
+            --color-building-cream: #F7E5CF; /* Cream for dashboard cards/background if changed */
+            --color-muted-orange: #F0BD8E; /* Muted orange for dashboard section titles */
+            --color-accent-pink: #F0578C; /* Pink for dashboard highlights/underline */
+
+            /* Focus and Glow Effects */
+            --focus-glow-color: rgba(255, 105, 180, 0.5);
+            --glow-color-soft: rgba(255, 105, 180, 0.2);
+            --glow-color-strong: rgba(255, 105, 180, 0.6);
+            --box-shadow-subtle: rgba(0,0,0,0.1);
+
+            /* Global Transitions & Shapes */
+            --transition-duration: 0.3s;
+            --border-radius-soft: 10px;
+            --border-radius-form-inputs: 6px;
+
+            /* About Us Page Specific Colors */
+            --about-us-bg-gradient-start: #0F2027; /* Dark green/teal gradient start */
+            --about-us-bg-gradient-end: #2C5364; /* Dark green/teal gradient end */
+            --about-us-card-bg: rgba(32, 58, 67, 0.8);
+            --about-us-initials-bg: #1A4D5C;
+            --about-us-initials-text: #A7DBD8;
+            --about-us-social-icon: #A7DBD8;
+            --about-us-text-light: #E0F2F7;
+            --about-us-text-muted: #9CA3AF; /* gray-400 equivalent */
+
+            /* Progress Bar Color */
+            --progress-bar-bg: #e0e0e0;
+            --progress-bar-fill: var(--button-primary-bg);
+        }
+
+        /* --- DARK MODE DEFINITIONS --- */
+        body.dark-mode {
+            /* Backgrounds */
+            --bg-gradient-start: #1A0D30;
+            --bg-gradient-end: #0A0414;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%) !important;
+            background-size: cover;
+
+            /* Text */
+            --text-primary-dark: #E0E0E0;
+            --text-secondary-light: #333333;
+            --text-muted: #A0A0A0;
+
+            /* Buttons */
+            --button-primary-bg: #FF69B4;
+            --button-primary-text: #222;
+
+            --button-secondary-bg-transparent: rgba(255, 255, 255, 0.08);
+            --button-secondary-text: var(--text-primary-dark);
+
+            /* Forms/Modals */
+            --form-bg-color: #281A3F;
+            --form-border-color: rgba(255,255,255,0.1);
+            --form-label-color: #B0B0B0;
+            --form-placeholder-color: #888;
+            --input-bg-transparent: rgba(255, 255, 255, 0.05);
+
+            /* Dashboard & Activity Page Specific Overrides */
+            --color-building-cream: #3A2E4F; /* Darker cream/purple for dark mode cards */
+            --color-muted-orange: #E0AE70;
+            --color-accent-pink: #FF69B4;
+
+            /* Glows/Shadows for dark mode */
+            --box-shadow-subtle: rgba(0,0,0,0.4);
+            --glow-color-soft: rgba(255, 105, 180, 0.3);
+            --glow-color-strong: rgba(255, 105, 180, 0.7);
+            --focus-glow-color: rgba(255, 105, 180, 0.7);
+
+            /* About Us Page Specific Dark Mode Overrides */
+            --about-us-card-bg: rgba(40, 26, 63, 0.8); /* Darker purple-ish for cards */
+            --about-us-initials-bg: #281A3F;
+            --about-us-initials-text: #E0E0E0;
+            --about-us-social-icon: #E0E0E0;
+            --about-us-text-light: #F0F0F0;
+            --about-us-text-muted: #A0A0A0;
+
+            /* Progress Bar Color */
+            --progress-bar-bg: rgba(255,255,255,0.1);
+            --progress-bar-fill: var(--button-primary-bg);
+        }
+
+        /* --- Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background-size: cover;
+            color: var(--text-primary-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 120vw;
+            height: 120vh;
+            background: radial-gradient(circle at 20% 70%, rgba(255,179,225,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 30%, rgba(160,233,255,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(255,242,127,0.2) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation: backgroundMove 25s infinite alternate ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body.dark-mode::before {
+            background: radial-gradient(circle at 20% 70%, rgba(138,43,226,0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 30%, rgba(0,255,255,0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(255,215,0,0.1) 0%, transparent 70%);
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(3deg); }
+        }
+
+        /* --- General Button Styles --- */
+        .btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius-soft);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all var(--transition-duration) ease-out;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            font-size: 1rem;
+            padding: 12px 25px;
+            letter-spacing: 0.5px;
+            border: 1px solid var(--button-primary-bg);
+            font-weight: 700;
+            transition: all var(--transition-duration) ease-out, box-shadow var(--transition-duration) ease-out;
+        }
+        .btn-primary:hover {
+            background: #E04D80;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--glow-color-strong), 0 0 15px var(--glow-color-strong);
+            border-color: #FFFFFF;
+        }
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--button-secondary-text);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-duration) ease-out, box-shadow var(--transition-duration) ease-out;
+        }
+        body.dark-mode .btn-secondary {
+            border: 1px solid var(--form-border-color);
+            background-color: var(--button-secondary-bg-transparent);
+        }
+        body.dark-mode .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+
+        /* --- Sidebar Specific Styles --- */
+        .sidebar-toggle-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            padding: 0;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            transition: all var(--transition-duration) ease-out;
+        }
+        .sidebar-toggle-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+        body.dark-mode .sidebar-toggle-button {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: var(--text-primary-dark);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode .sidebar-toggle-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 8px var(--glow-color-soft);
+        }
+        .theme-toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            padding: 0;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            transition: all var(--transition-duration) ease-out;
+        }
+        body.dark-mode .theme-toggle-button {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: var(--text-primary-dark);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode .theme-toggle-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 8px var(--glow-color-soft);
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        body.sidebar-open .sidebar-overlay {
+            display: block;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: var(--form-bg-color);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transition: left var(--transition-duration) ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            border-right: 1px solid var(--form-border-color);
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        body.dark-mode .sidebar {
+            background: var(--form-bg-color);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.4);
+            border-color: var(--form-border-color);
+        }
+        .main-content-wrapper {
+            transition: margin-left var(--transition-duration) ease-in-out;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        body.sidebar-open .main-content-wrapper {
+            margin-left: 280px;
+        }
+        .close-sidebar-button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            transition: color 0.2s ease, transform 0.2s ease-out;
+        }
+        .close-sidebar-button:hover {
+            color: var(--button-primary-bg);
+            transform: rotate(90deg) scale(1.1);
+        }
+        body.dark-mode .close-sidebar-button {
+            color: var(--text-primary-dark);
+        }
+        .profile-completion-card {
+            background: var(--color-building-cream);
+            border-radius: var(--border-radius-soft);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all var(--transition-duration) ease-out;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark-mode .profile-completion-card {
+            background: var(--color-building-cream);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .profile-completion-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15), 0 0 10px var(--glow-color-soft);
+        }
+        .profile-completion-card .profile-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .profile-image-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 0.8rem;
+            border: 3px solid var(--button-primary-bg);
+            box-shadow: 0 0 0 2px rgba(255,105,180,0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .profile-completion-card:hover .profile-image-container {
+            transform: scale(1.05);
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-info .profile-name {
+            font-weight: 700;
+            color: var(--text-primary-dark);
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+        .profile-info .completion-status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar-container {
+            background-color: var(--progress-bar-bg);
+            border-radius: 5px;
+            height: 8px;
+            width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-bar-fill);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            color: var(--text-primary-dark);
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius-form-inputs);
+            transition: background-color 0.2s ease, color 0.2s ease;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-nav-item i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            color: var(--color-muted-orange);
+        }
+        .sidebar-nav-item:hover {
+            background-color: rgba(255, 105, 180, 0.1);
+            color: var(--button-primary-bg);
+        }
+        body.dark-mode .sidebar-nav-item:hover {
+            background-color: rgba(255, 105, 180, 0.15);
+            color: var(--button-primary-bg);
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        body.dark-mode .sidebar-footer {
+            border-color: rgba(255,255,255,0.08);
+        }
+        .sidebar-footer .btn {
+            width: 80%;
+            margin: 0 auto;
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+        }
+        .sidebar-footer .meet-developers-sidebar {
+            background-color: var(--button-secondary-bg-transparent);
+            color: var(--button-secondary-text);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .sidebar-footer .meet-developers-sidebar {
+            border: 1px solid var(--form-border-color);
+            background-color: var(--button-secondary-bg-transparent);
+        }
+        .sidebar-footer .meet-developers-sidebar:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+        body.dark-mode .sidebar-footer .meet-developers-sidebar:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .page-container {
+            background: var(--form-bg-color);
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 960px;
+            box-sizing: border-box;
+            margin: 80px auto 20px auto;
+            position: relative;
+            z-index: 5;
+            transition: all var(--transition-duration) ease-out;
+        }
+        body.dark-mode .page-container {
+            background: var(--form-bg-color);
+        }
+        .page-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2), 0 0 20px var(--glow-color-soft);
+        }
+        body.dark-mode .page-container:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3), 0 0 20px var(--glow-color-soft);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        body.dark-mode .page-header {
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .page-title {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--text-primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        h2.section-title {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: var(--color-muted-orange);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        body.dark-mode h2.section-title {
+            color: var(--color-muted-orange);
+        }
+
+        h2.section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent-pink);
+            border-radius: 5px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-duration) ease-in-out;
+        }
+        body.dark-mode .modal-overlay {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--form-bg-color);
+            padding: 2rem;
+            border-radius: var(--border-radius-soft);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transform: translateY(20px) scale(0.95);
+            transition: all var(--transition-duration) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .modal-content {
+            background: var(--form-bg-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--form-border-color);
+        }
+        .modal-overlay.open .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary-dark);
+        }
+
+        .modal-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-content .description {
+            font-size: 1rem;
+            color: var(--text-primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .close-button {
+            color: var(--text-primary-dark);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease-out;
+        }
+        .close-button:hover {
+            color: var(--button-primary-bg);
+            transform: rotate(90deg) scale(1.1);
+        }
+        body.dark-mode .close-button {
+            color: var(--text-primary-dark);
+        }
+
+        /* --- Footer Styles --- */
+        .page-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        body.dark-mode .page-footer {
+            border-color: rgba(255,255,255,0.08);
+        }
+        .filters-container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-dropdown {
+            position: relative;
+        }
+        .filter-dropdown-toggle {
+            background: var(--color-building-cream);
+            color: var(--text-primary-dark);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius-form-inputs);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark-mode .filter-dropdown-toggle {
+            background: var(--color-building-cream);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .filter-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--form-bg-color);
+            padding: 1rem;
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 20;
+            min-width: 150px;
+            display: none;
+        }
+        body.dark-mode .filter-dropdown-menu {
+            background: var(--form-bg-color);
+            border: 1px solid var(--form-border-color);
+        }
+        .filter-dropdown-menu.active {
+            display: block;
+        }
+        .filter-dropdown-menu .checkbox-item {
+            margin-bottom: 0.5rem;
+        }
+        .filter-dropdown-menu .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Matchmaking Page Specific Styles */
+        .matchmaking-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .profile-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--form-bg-color);
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .profile-card-image {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            border-radius: var(--border-radius-soft);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-card h3 {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary-dark);
+        }
+        
+        .profile-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        
+        .profile-card-bio {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-primary-dark);
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .action-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-button.pass {
+            background-color: #e5e7eb;
+            color: #ef4444;
+        }
+        .action-button.pass:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .action-button.like {
+            background-color: #ff69b4;
+            color: white;
+        }
+        .action-button.like:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255,105,180,0.5);
+        }
+        
+        /* Match modal specific styles */
+        .match-modal-content {
+            text-align: center;
+        }
+        .match-modal-content h3 {
+            color: var(--button-primary-bg);
+        }
+
+        /* Responsive adjustments from the provided CSS */
+        @media (max-width: 768px) {
+            .page-container { padding: 1.5rem; margin-top: 60px; }
+            .page-title { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+            .section-title { font-size: clamp(1.3rem, 4vw, 2rem); }
+            .carousel-button.prev { left: -1rem; }
+            .carousel-button.next { right: -1rem; }
+            .filters-container { flex-direction: column; }
+            .page-header.centered { text-align: left; align-items: flex-start; }
+            .page-header .page-title, .page-header .page-tagline { text-align: left; }
+            .page-header {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            .page-header #header-text-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .filter-sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 300px;
+                height: 100%;
+                background-color: var(--form-bg-color);
+                z-index: 1001;
+                transition: left 0.3s ease;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+            .filter-sidebar.open {
+                left: 0;
+            }
+            .main-matchmaking-container {
+                transition: margin-left 0.3s ease;
+            }
+            body.filter-sidebar-open .main-matchmaking-container {
+                margin-left: 300px;
+            }
+            .filter-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .filter-overlay.open {
+                display: block;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-container { padding: 1rem; margin-top: 50px; }
+            .page-title { font-size: clamp(1.2rem, 6vw, 2rem); }
+            .section-title { font-size: clamp(1.1rem, 5vw, 1.8rem); }
+            .carousel-button.prev { left: -0.5rem; }
+            .carousel-button.next { right: -0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle-button" aria-label="Toggle dark/light mode">
+        🌙
+    </button>
+    <button id="sidebar-toggle" class="sidebar-toggle-button" aria-label="Open sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header flex items-center justify-between">
+            <h2 class="text-xl font-bold" style="color: var(--button-primary-bg);">StraitUp</h2>
+            <button class="close-sidebar-button" aria-label="Close sidebar">&times;</button>
+        </div>
+        <div class="profile-completion-card mt-8">
+            <a href="completeregistration.html" class="profile-link">
+                <div class="profile-image-container">
+                    <img src="https://via.placeholder.com/80/FF69B4/FFFFFF?text=User" alt="User Profile" class="profile-image">
+                </div>
+                <div class="profile-info">
+                    <p class="profile-name">User Name</p>
+                    <p class="completion-status">Registration 50% Complete</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <nav class="sidebar-nav mt-8 flex-grow">
+            <ul>
+                <li><a href="index.html" class="sidebar-nav-item"><i class="fas fa-home w-6"></i> Dashboard</a></li>
+                <li><a href="#" class="sidebar-nav-item"><i class="fas fa-tasks w-6"></i> My Tasks</a></li>
+                <li><a href="sportsactivities.html" class="sidebar-nav-item"><i class="fas fa-running w-6"></i> Sports</a></li>
+                <li><a href="food.html" class="sidebar-nav-item"><i class="fas fa-utensils w-6"></i> Food</a></li>
+                <li><a href="movies.html" class="sidebar-nav-item"><i class="fas fa-film w-6"></i> Movies</a></li>
+                <li><a href="faq.html" class="sidebar-nav-item"><i class="fas fa-question-circle w-6"></i> FAQ</a></li>
+                <li><a href="aboutus.html" class="sidebar-nav-item"><i class="fas fa-info-circle w-6"></i> About Us</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer mt-auto pt-4">
+            <button class="btn btn-secondary meet-developers-sidebar" onclick="window.location.href='aboutus.html'">Meet the Developers</button>
+            <button class="btn btn-primary mt-2" id="logoutBtnSidebar">Logout</button>
+        </div>
+    </aside>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <div id="main-content-wrapper" class="main-content-wrapper">
+        <div class="page-container">
+            <header class="page-header centered mb-0">
+                <div id="header-text-container">
+                    <h1 class="page-title" style="color: var(--button-primary-bg);">Matchmaking</h1>
+                    <p class="page-tagline">Find your next companion for a movie night!</p>
+                </div>
+            </header>
+
+            <hr class="my-6 border-gray-200 dark:border-gray-700">
+
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Filter Section -->
+                <aside id="filter-sidebar" class="filter-sidebar md:w-1/4 p-4 lg:p-0 bg-white dark:bg-gray-800 rounded-lg shadow-md lg:shadow-none">
+                    <div class="flex justify-between items-center lg:hidden">
+                        <h2 class="text-xl font-bold" style="color: var(--text-primary-dark);">Filters</h2>
+                        <button id="close-filter-btn" class="text-2xl" style="color: var(--text-primary-dark);">&times;</button>
+                    </div>
+
+                    <div class="mt-4">
+                        <h3 class="font-semibold text-lg mb-2" style="color: var(--color-muted-orange);">Date & Time</h3>
+                        <div class="space-y-2">
+                            <div>
+                                <label for="date-filter" class="block text-sm font-medium" style="color: var(--form-label-color);">Date</label>
+                                <input type="date" id="date-filter" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2" style="background-color: var(--input-bg-transparent); border-color: var(--form-border-color); color: var(--text-primary-dark); focus-ring-color: var(--focus-glow-color);">
+                            </div>
+                            <div>
+                                <label for="time-filter" class="block text-sm font-medium" style="color: var(--form-label-color);">Time</label>
+                                <input type="time" id="time-filter" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2" style="background-color: var(--input-bg-transparent); border-color: var(--form-border-color); color: var(--text-primary-dark); focus-ring-color: var(--focus-glow-color);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-lg mb-2" style="color: var(--color-muted-orange);">Language</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center"><input type="checkbox" id="lang-tamil" value="Tamil" class="language-filter mr-2"><label for="lang-tamil" style="color: var(--text-primary-dark);">Tamil</label></div>
+                            <div class="flex items-center"><input type="checkbox" id="lang-english" value="English" class="language-filter mr-2"><label for="lang-english" style="color: var(--text-primary-dark);">English</label></div>
+                            <div class="flex items-center"><input type="checkbox" id="lang-hindi" value="Hindi" class="language-filter mr-2"><label for="lang-hindi" style="color: var(--text-primary-dark);">Hindi</label></div>
+                            <div class="flex items-center"><input type="checkbox" id="lang-telugu" value="Telugu" class="language-filter mr-2"><label for="lang-telugu" style="color: var(--text-primary-dark);">Telugu</label></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-lg mb-2" style="color: var(--color-muted-orange);">Age</h3>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="min-age" placeholder="Min" class="w-1/2 p-2 border rounded-lg focus:outline-none focus:ring-2" style="background-color: var(--input-bg-transparent); border-color: var(--form-border-color); color: var(--text-primary-dark); focus-ring-color: var(--focus-glow-color);">
+                            <span style="color: var(--text-primary-dark);">-</span>
+                            <input type="number" id="max-age" placeholder="Max" class="w-1/2 p-2 border rounded-lg focus:outline-none focus:ring-2" style="background-color: var(--input-bg-transparent); border-color: var(--form-border-color); color: var(--text-primary-dark); focus-ring-color: var(--focus-glow-color);">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="font-semibold text-lg mb-2" style="color: var(--color-muted-orange);">Gender</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center"><input type="radio" id="gender-male" name="gender" value="Male" class="gender-filter mr-2"><label for="gender-male" style="color: var(--text-primary-dark);">Male</label></div>
+                            <div class="flex items-center"><input type="radio" id="gender-female" name="gender" value="Female" class="gender-filter mr-2"><label for="gender-female" style="color: var(--text-primary-dark);">Female</label></div>
+                            <div class="flex items-center"><input type="radio" id="gender-any" name="gender" value="" class="gender-filter mr-2" checked><label for="gender-any" style="color: var(--text-primary-dark);">Any</label></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-center">
+                        <button id="apply-filters-btn" class="btn-primary w-full max-w-xs">Apply Filters</button>
+                    </div>
+                </aside>
+
+                <!-- Matchmaking Content -->
+                <main class="main-matchmaking-container w-full lg:w-3/4 flex flex-col items-center">
+                    <div id="no-profiles-message" class="hidden text-center" style="color: var(--text-muted);">
+                        <p class="text-xl">No profiles found. Try adjusting your filters!</p>
+                    </div>
+                    <div id="profile-card-container" class="profile-card-container">
+                        <!-- Profile cards will be dynamically inserted here -->
+                    </div>
+                    <div class="profile-actions" id="profile-actions">
+                        <button class="action-button pass" id="pass-btn" aria-label="Pass">
+                            <span class="text-2xl">🚫</span>
+                        </button>
+                        <button class="action-button like" id="like-btn" aria-label="Like">
+                            <i class="fas fa-thumbs-up"></i>
+                        </button>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="page-footer">
+                <p>&copy; 2025 StraitUp. All rights reserved.</p>
+                <a href="feedback.html" class="text-sm">Give Feedback</a>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Match Modal -->
+    <div id="match-modal" class="modal-overlay">
+        <div class="modal-content match-modal-content">
+            <button class="close-button" id="match-modal-close-btn">&times;</button>
+            <h3 class="text-4xl font-bold text-primary mb-2">It's a Match! 🎉</h3>
+            <p class="text-xl" style="color: var(--text-primary-dark);">You and <span id="match-name" class="font-bold"></span> both liked each other.</p>
+            <div class="mt-6">
+                <button class="btn btn-primary" id="start-chat-btn">Start Chatting</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Overlay for mobile -->
+    <div id="filter-overlay" class="filter-overlay"></div>
+
+    <script>
+        // --- DATA ---
+        // A data array to store all user profiles with their details.
+        const allProfiles = [
+            { id: 1, name: 'Aarav', age: 22, gender: 'Male', languages: ['Hindi', 'English'], interests: ['Action movies', 'Sci-fi'], img: 'https://placehold.co/400x550/A0E9FF/333333?text=Aarav' },
+            { id: 2, name: 'Priya', age: 21, gender: 'Female', languages: ['English', 'Tamil'], interests: ['Romantic comedies', 'Drama'], img: 'https://placehold.co/400x550/FFB3E1/333333?text=Priya' },
+            { id: 3, name: 'Rahul', age: 23, gender: 'Male', languages: ['Telugu', 'Hindi'], interests: ['Horror movies', 'Fantasy'], img: 'https://placehold.co/400x550/A0E9FF/333333?text=Rahul' },
+            { id: 4, name: 'Anjali', age: 20, gender: 'Female', languages: ['Tamil', 'English'], interests: ['Animation', 'Comedy'], img: 'https://placehold.co/400x550/FFB3E1/333333?text=Anjali' },
+            { id: 5, name: 'Krish', age: 24, gender: 'Male', languages: ['English', 'Telugu'], interests: ['Documentary', 'Thriller'], img: 'https://placehold.co/400x550/A0E9FF/333333?text=Krish' },
+            { id: 6, name: 'Deepa', age: 21, gender: 'Female', languages: ['Hindi', 'English'], interests: ['Musical', 'Romance'], img: 'https://placehold.co/400x550/FFB3E1/333333?text=Deepa' },
+            { id: 7, name: 'Varun', age: 22, gender: 'Male', languages: ['Tamil', 'English'], interests: ['Action movies', 'Adventure'], img: 'https://placehold.co/400x550/A0E9FF/333333?text=Varun' },
+        ];
+        
+        let availableProfiles = [...allProfiles];
+        let currentProfileIndex = 0;
+        let likedProfiles = [];
+
+        // --- DOM Elements ---
+        const body = document.body;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebarBtn = document.querySelector('.close-sidebar-button');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        const profileCardContainer = document.getElementById('profile-card-container');
+        const passBtn = document.getElementById('pass-btn');
+        const likeBtn = document.getElementById('like-btn');
+        const noProfilesMessage = document.getElementById('no-profiles-message');
+        const filterSidebar = document.getElementById('filter-sidebar');
+        const closeFilterBtn = document.getElementById('close-filter-btn');
+        const applyFiltersBtn = document.getElementById('apply-filters-btn');
+        const filterOverlay = document.getElementById('filter-overlay');
+        const mainMatchmakingContainer = document.querySelector('.main-matchmaking-container');
+        
+        const dateFilter = document.getElementById('date-filter');
+        const timeFilter = document.getElementById('time-filter');
+        const languageFilters = document.querySelectorAll('.language-filter');
+        const ageMinFilter = document.getElementById('min-age');
+        const ageMaxFilter = document.getElementById('max-age');
+        const genderFilters = document.querySelectorAll('.gender-filter');
+
+        const matchModal = document.getElementById('match-modal');
+        const matchModalCloseBtn = document.getElementById('match-modal-close-btn');
+        const matchNameSpan = document.getElementById('match-name');
+        
+        // --- Functions ---
+        
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark-mode') {
+                body.classList.add('dark-mode');
+                themeToggleBtn.innerHTML = '☀️';
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggleBtn.innerHTML = '🌙';
+            }
+        }
+        applySavedTheme();
+
+        function renderCurrentProfile() {
+            profileCardContainer.innerHTML = '';
+            if (availableProfiles.length === 0) {
+                noProfilesMessage.classList.remove('hidden');
+                passBtn.disabled = true;
+                likeBtn.disabled = true;
+                return;
+            } else {
+                noProfilesMessage.classList.add('hidden');
+                passBtn.disabled = false;
+                likeBtn.disabled = false;
+            }
+
+            const currentProfile = availableProfiles[currentProfileIndex];
+            const card = document.createElement('div');
+            card.className = 'profile-card';
+            card.style.zIndex = availableProfiles.length - currentProfileIndex;
+            card.innerHTML = `
+                <img src="${currentProfile.img}" alt="${currentProfile.name}'s Profile" class="profile-card-image">
+                <h3 class="font-semibold text-2xl">${currentProfile.name}, ${currentProfile.age}</h3>
+                <p class="text-sm" style="color: var(--text-muted);">Languages: ${currentProfile.languages.join(', ')}</p>
+                <p class="profile-card-bio">${currentProfile.interests.join(', ')}</p>
+            `;
+            profileCardContainer.appendChild(card);
+        }
+
+        function handlePass() {
+            const currentCard = document.querySelector('.profile-card');
+            currentCard.style.transform = 'translateX(-100vw) rotate(-30deg)';
+            currentCard.style.opacity = '0';
+            setTimeout(() => {
+                currentProfileIndex++;
+                if (currentProfileIndex >= availableProfiles.length) {
+                    currentProfileIndex = 0; // Loop back to the beginning
+                }
+                renderCurrentProfile();
+            }, 500);
+        }
+
+        function handleLike() {
+            const currentCard = document.querySelector('.profile-card');
+            currentCard.style.transform = 'translateX(100vw) rotate(30deg)';
+            currentCard.style.opacity = '0';
+            
+            const currentProfile = availableProfiles[currentProfileIndex];
+            likedProfiles.push(currentProfile.id);
+            
+            // Simulating a mutual match (if the user's profile is liked by the other person in our demo data)
+            // For a real app, this would be handled by a backend.
+            if (currentProfile.id === 2 || currentProfile.id === 6) { // example profiles that are pre-liked by the demo user
+                 showMatchModal(currentProfile.name);
+            }
+
+            setTimeout(() => {
+                currentProfileIndex++;
+                if (currentProfileIndex >= availableProfiles.length) {
+                    currentProfileIndex = 0; // Loop back to the beginning
+                }
+                renderCurrentProfile();
+            }, 500);
+        }
+
+        function showMatchModal(name) {
+            matchNameSpan.textContent = name;
+            matchModal.classList.add('open');
+        }
+
+        function applyFilters() {
+            const selectedLanguages = Array.from(languageFilters).filter(cb => cb.checked).map(cb => cb.value);
+            const selectedGender = document.querySelector('.gender-filter:checked').value;
+            const minAge = ageMinFilter.value ? parseInt(ageMinFilter.value) : null;
+            const maxAge = ageMaxFilter.value ? parseInt(ageMaxFilter.value) : null;
+
+            availableProfiles = allProfiles.filter(profile => {
+                const matchesLanguage = selectedLanguages.length === 0 || selectedLanguages.some(lang => profile.languages.includes(lang));
+                const matchesGender = !selectedGender || profile.gender === selectedGender;
+                const matchesAge = (!minAge || profile.age >= minAge) && (!maxAge || profile.age <= maxAge);
+
+                return matchesLanguage && matchesGender && matchesAge;
+            });
+            currentProfileIndex = 0;
+            renderCurrentProfile();
+            // Close the filter sidebar on mobile after applying filters
+            if (window.innerWidth < 768) {
+                closeFilterSidebar();
+            }
+        }
+
+        function toggleFilterSidebar() {
+            filterSidebar.classList.toggle('open');
+            filterOverlay.classList.toggle('open');
+            body.classList.toggle('filter-sidebar-open');
+        }
+
+        function closeFilterSidebar() {
+            filterSidebar.classList.remove('open');
+            filterOverlay.classList.remove('open');
+            body.classList.remove('filter-sidebar-open');
+        }
+
+
+        // --- Event Listeners ---
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                themeToggleBtn.innerHTML = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light-mode');
+                themeToggleBtn.innerHTML = '🌙';
+            }
+        });
+
+        sidebarToggleBtn.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('sidebar-open');
+            body.classList.add('sidebar-open');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('sidebar-open');
+            body.classList.remove('sidebar-open');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('sidebar-open');
+            body.classList.remove('sidebar-open');
+        });
+
+        passBtn.addEventListener('click', handlePass);
+        likeBtn.addEventListener('click', handleLike);
+        applyFiltersBtn.addEventListener('click', applyFilters);
+        
+        // Initial rendering
+        renderCurrentProfile();
+    </script>
+</body>
+</html>

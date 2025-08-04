@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraitUp - Movies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables: Color Palette & Global Settings --- */
+        :root {
+            /* -- Light Mode Colors (default) -- */
+            --bg-gradient-start: #A0E9FF; /* Light Blue */
+            --bg-gradient-end: #FFB3E1; /* Bubblegum Pink */
+
+            --text-primary-dark: #333333;
+            --text-secondary-light: #FFFFFF;
+            --text-muted: #666;
+
+            --button-primary-bg: #FF69B4; /* Hot Pink */
+            --button-primary-text: var(--text-secondary-light);
+
+            --button-secondary-bg-transparent: rgba(255, 255, 255, 0.2);
+            --button-secondary-text: var(--text-primary-dark);
+
+            /* Form Element Colors (specific to register/login pages) */
+            --form-bg-color: #FFFFFF; /* White background for forms/modals */
+            --form-border-color: #ddd;
+            --form-label-color: #555;
+            --form-placeholder-color: #aaa;
+            --input-bg-transparent: #FFFFFF; /* Default for light mode inputs */
+
+            /* Dashboard Specific Colors (used for dashboard page elements) */
+            --color-building-cream: #F7E5CF; /* Cream for dashboard cards/background if changed */
+            --color-muted-orange: #F0BD8E; /* Muted orange for dashboard section titles */
+            --color-accent-pink: #F0578C; /* Pink for dashboard highlights/underline */
+
+            /* Focus and Glow Effects */
+            --focus-glow-color: rgba(255, 105, 180, 0.5);
+            --glow-color-soft: rgba(255, 105, 180, 0.2);
+            --glow-color-strong: rgba(255, 105, 180, 0.6);
+            --box-shadow-subtle: rgba(0,0,0,0.1);
+
+            /* Global Transitions & Shapes */
+            --transition-duration: 0.3s;
+            --border-radius-soft: 10px;
+            --border-radius-form-inputs: 6px;
+
+            /* About Us Page Specific Colors */
+            --about-us-bg-gradient-start: #0F2027; /* Dark green/teal gradient start */
+            --about-us-bg-gradient-end: #2C5364; /* Dark green/teal gradient end */
+            --about-us-card-bg: rgba(32, 58, 67, 0.8);
+            --about-us-initials-bg: #1A4D5C;
+            --about-us-initials-text: #A7DBD8;
+            --about-us-social-icon: #A7DBD8;
+            --about-us-text-light: #E0F2F7;
+            --about-us-text-muted: #9CA3AF; /* gray-400 equivalent */
+
+            /* Progress Bar Color */
+            --progress-bar-bg: #e0e0e0;
+            --progress-bar-fill: var(--button-primary-bg);
+        }
+
+        /* --- DARK MODE DEFINITIONS --- */
+        body.dark-mode {
+            /* Backgrounds */
+            --bg-gradient-start: #1A0D30;
+            --bg-gradient-end: #0A0414;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%) !important;
+            background-size: cover;
+
+            /* Text */
+            --text-primary-dark: #E0E0E0;
+            --text-secondary-light: #333333;
+            --text-muted: #A0A0A0;
+
+            /* Buttons */
+            --button-primary-bg: #FF69B4;
+            --button-primary-text: #222;
+
+            --button-secondary-bg-transparent: rgba(255, 255, 255, 0.08);
+            --button-secondary-text: var(--text-primary-dark);
+
+            /* Forms/Modals */
+            --form-bg-color: #281A3F;
+            --form-border-color: rgba(255,255,255,0.1);
+            --form-label-color: #B0B0B0;
+            --form-placeholder-color: #888;
+            --input-bg-transparent: rgba(255, 255, 255, 0.05);
+
+            /* Dashboard & Activity Page Specific Overrides */
+            --color-building-cream: #3A2E4F; /* Darker cream/purple for dark mode cards */
+            --color-muted-orange: #E0AE70;
+            --color-accent-pink: #FF69B4;
+
+            /* Glows/Shadows for dark mode */
+            --box-shadow-subtle: rgba(0,0,0,0.4);
+            --glow-color-soft: rgba(255, 105, 180, 0.3);
+            --glow-color-strong: rgba(255, 105, 180, 0.7);
+            --focus-glow-color: rgba(255, 105, 180, 0.7);
+
+            /* About Us Page Specific Dark Mode Overrides */
+            --about-us-card-bg: rgba(40, 26, 63, 0.8); /* Darker purple-ish for cards */
+            --about-us-initials-bg: #281A3F;
+            --about-us-initials-text: #E0E0E0;
+            --about-us-social-icon: #E0E0E0;
+            --about-us-text-light: #F0F0F0;
+            --about-us-text-muted: #A0A0A0;
+
+            /* Progress Bar Color */
+            --progress-bar-bg: rgba(255,255,255,0.1);
+            --progress-bar-fill: var(--button-primary-bg);
+        }
+
+        /* --- Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background-size: cover;
+            color: var(--text-primary-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            transition: background-color var(--transition-duration) ease, color var(--transition-duration) ease;
+        }
+
+        /* Optional: Subtle background pattern for depth */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 120vw;
+            height: 120vh;
+            background: radial-gradient(circle at 20% 70%, rgba(255,179,225,0.4) 0%, transparent 50%),
+                                 radial-gradient(circle at 80% 30%, rgba(160,233,255,0.4) 0%, transparent 50%),
+                                 radial-gradient(circle at 50% 50%, rgba(255,242,127,0.2) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation: backgroundMove 25s infinite alternate ease-in-out;
+            z-index: 0;
+            pointer-events: none;
+        }
+        body.dark-mode::before {
+            background: radial-gradient(circle at 20% 70%, rgba(138,43,226,0.3) 0%, transparent 50%),
+                                 radial-gradient(circle at 80% 30%, rgba(0,255,255,0.3) 0%, transparent 50%),
+                                 radial-gradient(circle at 50% 50%, rgba(255,215,0,0.1) 0%, transparent 70%);
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, -5%) rotate(3deg); }
+        }
+
+        /* --- General Button Styles --- */
+        .btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius-soft);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all var(--transition-duration) ease-out;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* --- Primary Button Specific Styles --- */
+        .btn-primary {
+            background: var(--button-primary-bg);
+            color: var(--button-primary-text);
+            font-size: 1rem;
+            padding: 12px 25px;
+            letter-spacing: 0.5px;
+            border: 1px solid var(--button-primary-bg);
+            font-weight: 700;
+            transition: all var(--transition-duration) ease-out, box-shadow var(--transition-duration) ease-out;
+        }
+        .btn-primary:hover {
+            background: #E04D80;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--glow-color-strong), 0 0 15px var(--glow-color-strong);
+            border-color: #FFFFFF;
+        }
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--button-secondary-text);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-duration) ease-out, box-shadow var(--transition-duration) ease-out;
+        }
+        body.dark-mode .btn-secondary {
+            border: 1px solid var(--form-border-color);
+            background-color: var(--button-secondary-bg-transparent);
+        }
+        body.dark-mode .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+
+        /* --- Sidebar Specific Styles --- */
+        .sidebar-toggle-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            padding: 0;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            transition: all var(--transition-duration) ease-out;
+        }
+        .sidebar-toggle-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+        body.dark-mode .sidebar-toggle-button {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: var(--text-primary-dark);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode .sidebar-toggle-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 8px var(--glow-color-soft);
+        }
+        .theme-toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            padding: 0;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            transition: all var(--transition-duration) ease-out;
+        }
+        body.dark-mode .theme-toggle-button {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: var(--text-primary-dark);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode .theme-toggle-button:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), 0 0 8px var(--glow-color-soft);
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        body.sidebar-open .sidebar-overlay {
+            display: block;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: var(--form-bg-color);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            transition: left var(--transition-duration) ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            border-right: 1px solid var(--form-border-color);
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        body.dark-mode .sidebar {
+            background: var(--form-bg-color);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.4);
+            border-color: var(--form-border-color);
+        }
+        .main-content-wrapper {
+            transition: margin-left var(--transition-duration) ease-in-out;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        body.sidebar-open .main-content-wrapper {
+            margin-left: 280px;
+        }
+        .close-sidebar-button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-primary-dark);
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            transition: color 0.2s ease, transform 0.2s ease-out;
+        }
+        .close-sidebar-button:hover {
+            color: var(--button-primary-bg);
+            transform: rotate(90deg) scale(1.1);
+        }
+        body.dark-mode .close-sidebar-button {
+            color: var(--text-primary-dark);
+        }
+        .profile-completion-card {
+            background: var(--color-building-cream);
+            border-radius: var(--border-radius-soft);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all var(--transition-duration) ease-out;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark-mode .profile-completion-card {
+            background: var(--color-building-cream);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .profile-completion-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15), 0 0 10px var(--glow-color-soft);
+        }
+        .profile-completion-card .profile-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .profile-image-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 0.8rem;
+            border: 3px solid var(--button-primary-bg);
+            box-shadow: 0 0 0 2px rgba(255,105,180,0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .profile-completion-card:hover .profile-image-container {
+            transform: scale(1.05);
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-info .profile-name {
+            font-weight: 700;
+            color: var(--text-primary-dark);
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
+        }
+        .profile-info .completion-status {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar-container {
+            background-color: var(--progress-bar-bg);
+            border-radius: 5px;
+            height: 8px;
+            width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-bar-fill);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            color: var(--text-primary-dark);
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius-form-inputs);
+            transition: background-color 0.2s ease, color 0.2s ease;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-nav-item i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            color: var(--color-muted-orange);
+        }
+        .sidebar-nav-item:hover {
+            background-color: rgba(255, 105, 180, 0.1);
+            color: var(--button-primary-bg);
+        }
+        body.dark-mode .sidebar-nav-item:hover {
+            background-color: rgba(255, 105, 180, 0.15);
+            color: var(--button-primary-bg);
+        }
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        body.dark-mode .sidebar-footer {
+            border-color: rgba(255,255,255,0.08);
+        }
+        .sidebar-footer .btn {
+            width: 80%;
+            margin: 0 auto;
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+        }
+        .sidebar-footer .meet-developers-sidebar {
+            background-color: var(--button-secondary-bg-transparent);
+            color: var(--button-secondary-text);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .sidebar-footer .meet-developers-sidebar:hover {
+            border: 1px solid var(--form-border-color);
+            background-color: var(--button-secondary-bg-transparent);
+        }
+        .sidebar-footer .meet-developers-sidebar:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15), 0 0 8px var(--glow-color-soft);
+        }
+        body.dark-mode .sidebar-footer .meet-developers-sidebar:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+        .page-container {
+            background: var(--form-bg-color);
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 960px;
+            box-sizing: border-box;
+            margin: 80px auto 20px auto;
+            position: relative;
+            z-index: 5;
+            transition: all var(--transition-duration) ease-out;
+        }
+        body.dark-mode .page-container {
+            background: var(--form-bg-color);
+        }
+        .page-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2), 0 0 20px var(--glow-color-soft);
+        }
+        body.dark-mode .page-container:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3), 0 0 20px var(--glow-color-soft);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        body.dark-mode .page-header {
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .page-title {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--text-primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        h2.section-title {
+            font-family: 'Comfortaa', cursive;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: var(--color-muted-orange);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        body.dark-mode h2.section-title {
+            color: var(--color-muted-orange);
+        }
+
+        h2.section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent-pink);
+            border-radius: 5px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-duration) ease-in-out;
+        }
+        body.dark-mode .modal-overlay {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--form-bg-color);
+            padding: 2rem;
+            border-radius: var(--border-radius-soft);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transform: translateY(20px) scale(0.95);
+            transition: all var(--transition-duration) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .modal-content {
+            background: var(--form-bg-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--form-border-color);
+        }
+        .modal-overlay.open .modal-content {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .modal-content h3 {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary-dark);
+        }
+
+        .modal-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .modal-content .description {
+            font-size: 1rem;
+            color: var(--text-primary-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .close-button {
+            color: var(--text-primary-dark);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease-out;
+        }
+        .close-button:hover {
+            color: var(--button-primary-bg);
+            transform: rotate(90deg) scale(1.1);
+        }
+        body.dark-mode .close-button {
+            color: var(--text-primary-dark);
+        }
+
+        /* --- Footer Styles --- */
+        .page-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        body.dark-mode .page-footer {
+            border-color: rgba(255,255,255,0.08);
+        }
+        .filters-container {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .filter-dropdown {
+            position: relative;
+        }
+        .filter-dropdown-toggle {
+            background: var(--color-building-cream);
+            color: var(--text-primary-dark);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius-form-inputs);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            box-shadow: 0 2px 5px var(--box-shadow-subtle);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark-mode .filter-dropdown-toggle {
+            background: var(--color-building-cream);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .filter-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--form-bg-color);
+            padding: 1rem;
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 20;
+            min-width: 150px;
+            display: none;
+        }
+        body.dark-mode .filter-dropdown-menu {
+            background: var(--form-bg-color);
+            border: 1px solid var(--form-border-color);
+        }
+        .filter-dropdown-menu.active {
+            display: block;
+        }
+        .filter-dropdown-menu .checkbox-item {
+            margin-bottom: 0.5rem;
+        }
+        .filter-dropdown-menu .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Matchmaking Page Specific Styles */
+        .matchmaking-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .profile-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--form-bg-color);
+            border-radius: var(--border-radius-soft);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            padding: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+
+        .profile-card-image {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            border-radius: var(--border-radius-soft);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-card h3 {
+            font-family: 'Comfortaa', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary-dark);
+        }
+        
+        .profile-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        
+        .profile-card-bio {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-primary-dark);
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .action-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-button.pass {
+            background-color: #e5e7eb;
+            color: #ef4444;
+        }
+        .action-button.pass:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .action-button.like {
+            background-color: #ff69b4;
+            color: white;
+        }
+        .action-button.like:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255,105,180,0.5);
+        }
+        
+        /* Match modal specific styles */
+        .match-modal-content {
+            text-align: center;
+        }
+        .match-modal-content h3 {
+            color: var(--button-primary-bg);
+        }
+
+        /* CAROUSEL SPECIFIC STYLES */
+        /* Ensure the carousel container hides overflow */
+        .carousel-container {
+            position: relative;
+            margin: 0 auto;
+            max-width: 800px; /* Adjust based on your layout needs for three cards */
+            overflow: hidden; /* Hide anything outside */
+        }
+
+        /* Flexbox for carousel items and scroll behavior */
+        #now-showing-carousel,
+        #coming-soon-carousel {
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory; /* Snap to individual items or groups */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding-bottom: 1rem; /* Adjust as needed for scrollbar */
+            gap: 1 rem; /* Space between cards */
+        }
+
+        /* Hide scrollbar for a cleaner look */
+        #now-showing-carousel::-webkit-scrollbar,
+        #coming-soon-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        #now-showing-carousel,
+        #coming-soon-carousel {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .movie-card {
+            flex: 0 0 calc(33.33% - 1rem); /* 3 cards per row with 1.5rem gap (1.5rem * 2 / 3 = 1rem) */
+            scroll-snap-align: start;
+            min-width: calc(33.33% - 1rem); /* Ensure minimum width for 3 cards */
+            background: var(--color-building-cream); /* Example background for cards */
+            border-radius: var(--border-radius-soft);
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        body.dark-mode .movie-card {
+            background: var(--color-building-cream);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15), 0 0 10px var(--glow-color-soft);
+        }
+
+        .movie-card img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            color: var(--text-primary-dark);
+        }
+        body.dark-mode .carousel-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-primary-dark);
+        }
+
+        .carousel-button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .carousel-button:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .carousel-button.prev {
+            left: -20px;
+        }
+
+        .carousel-button.next {
+            right: -20px;
+        }
+
+        /* Responsive adjustments from the provided CSS */
+        @media (max-width: 768px) {
+            .page-container { padding: 1.5rem; margin-top: 50px; }
+            .page-title { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+            .section-title { font-size: clamp(1.3rem, 4vw, 2rem); }
+            /* Adjust movie card width for 2 cards per row on smaller screens */
+            .movie-card {
+                flex: 0 0 calc(50% - 0.75rem); /* 2 cards per row with 1.5rem gap (1.5rem * 1 / 2 = 0.75rem) */
+                min-width: calc(50% - 0.75rem);
+            }
+            .carousel-button.prev { left: -1rem; }
+            .carousel-button.next { right: -1rem; }
+            .filters-container { flex-direction: column; }
+            .page-header.centered { text-align: left; align-items: flex-start; }
+            .page-header .page-title, .page-header .page-tagline { text-align: left; }
+            .page-header {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            .page-header #header-text-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .filter-sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 300px;
+                height: 100%;
+                background-color: var(--form-bg-color);
+                z-index: 1001;
+                transition: left 0.3s ease;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+            .filter-sidebar.open {
+                left: 0;
+            }
+            .main-matchmaking-container {
+                transition: margin-left 0.3s ease;
+            }
+            body.filter-sidebar-open .main-matchmaking-container {
+                margin-left: 300px;
+            }
+            .filter-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            .filter-overlay.open {
+                display: block;
+            }
+        }
+        @media (max-width: 480px) {
+            .page-container { padding: 1rem; margin-top: 50px; }
+            .page-title { font-size: clamp(1.2rem, 6vw, 2rem); }
+            .section-title { font-size: clamp(1.1rem, 5vw, 1.8rem); }
+            /* Adjust movie card width for 1 card per row on very small screens */
+            .movie-card {
+                flex: 0 0 100%; /* 1 card per row */
+                min-width: 100%;
+            }
+            .carousel-button.prev { left: -0.5rem; }
+            .carousel-button.next { right: -0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle-button" aria-label="Toggle dark/light mode">
+        🌙
+    </button>
+    <button id="sidebar-toggle" class="sidebar-toggle-button" aria-label="Open sidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header flex items-center justify-between">
+            <h2 class="text-xl font-bold" style="color: var(--button-primary-bg);">StraitUp</h2>
+            <button class="close-sidebar-button" aria-label="Close sidebar">&times;</button>
+        </div>
+        <div class="profile-completion-card mt-8">
+            <a href="completeregistration.html" class="profile-link">
+                <div class="profile-image-container">
+                    <img src="https://via.placeholder.com/80/FF69B4/FFFFFF?text=User" alt="User Profile" class="profile-image">
+                </div>
+                <div class="profile-info">
+                    <p class="profile-name">User Name</p>
+                    <p class="completion-status">Registration 50% Complete</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <nav class="sidebar-nav mt-8 flex-grow">
+            <ul>
+                <li><a href="index.html" class="sidebar-nav-item"><i class="fas fa-home w-6"></i> Dashboard</a></li>
+                <li><a href="#" class="sidebar-nav-item"><i class="fas fa-tasks w-6"></i> My Tasks</a></li>
+                <li><a href="sportsactivities.html" class="sidebar-nav-item"><i class="fas fa-running w-6"></i> Sports</a></li>
+                <li><a href="food.html" class="sidebar-nav-item"><i class="fas fa-utensils w-6"></i> Food</a></li>
+                <li><a href="movies.html" class="sidebar-nav-item"><i class="fas fa-film w-6"></i> Movies</a></li>
+                <li><a href="faq.html" class="sidebar-nav-item"><i class="fas fa-question-circle w-6"></i> FAQ</a></li>
+                <li><a href="aboutus.html" class="sidebar-nav-item"><i class="fas fa-info-circle w-6"></i> About Us</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer mt-auto pt-4">
+            <button class="btn btn-secondary meet-developers-sidebar" onclick="window.location.href='aboutus.html'">Meet the Developers</button>
+            <button class="btn btn-primary mt-2" id="logoutBtnSidebar">Logout</button>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <div id="main-content-wrapper" class="main-content-wrapper">
+        <div class="page-container">
+            <header class="page-header centered mb-0">
+                <div id="header-text-container">
+                    <h1 class="page-title" style="color: var(--button-primary-bg);">Movies</h1>
+                    <p class="page-tagline">Find your favorite films and new friends to watch them with!</p>
+                </div>
+            </header>
+
+            <hr class="my-6 border-gray-200 dark:border-gray-700">
+            
+            <div id="carousel-view">
+                <div class="flex justify-end mb-6">
+                    <button id="search-toggle-btn" class="btn btn-secondary whitespace-nowrap px-4 py-2">
+                        Search <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <section class="mb-12">
+                    <div class="relative carousel-container">
+                        <h2 class="section-title">Now Showing</h2>
+                        <div id="now-showing-carousel" class="flex overflow-x-scroll scroll-smooth space-x-6 pb-4 md:pb-8">
+                            </div>
+                        <div id="now-showing-prev" class="carousel-button prev"><i class="fas fa-chevron-left"></i></div>
+                        <div id="now-showing-next" class="carousel-button next"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="relative carousel-container">
+                        <h2 class="section-title">Coming Soon</h2>
+                        <div id="coming-soon-carousel" class="flex overflow-x-scroll scroll-smooth space-x-6 pb-4 md:pb-8">
+                            </div>
+                        <div id="coming-soon-prev" class="carousel-button prev"><i class="fas fa-chevron-left"></i></div>
+                        <div id="coming-soon-next" class="carousel-button next"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="search-view" class="hidden">
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-6">
+                    <input type="text" id="movie-search" placeholder="Search for movies..." class="w-full md:w-1/2 p-3 rounded-lg border focus:outline-none focus:ring-2" style="background-color: var(--form-bg-color); border-color: var(--form-border-color); color: var(--text-primary-dark); focus-ring-color: var(--focus-glow-color);">
+                    <div class="flex flex-wrap gap-4">
+                        <div class="filter-dropdown" data-dropdown-id="language">
+                            <button class="filter-dropdown-toggle">
+                                Language
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="filter-dropdown-menu" id="language-dropdown">
+                                <div class="checkbox-item"><input type="checkbox" id="lang-tamil" value="Tamil" class="language-filter"><label for="lang-tamil">Tamil</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="lang-english" value="English" class="language-filter"><label for="lang-english">English</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="lang-hindi" value="Hindi" class="language-filter"><label for="lang-hindi">Hindi</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="lang-telugu" value="Telugu" class="language-filter"><label for="lang-telugu">Telugu</label></div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown" data-dropdown-id="genre">
+                            <button class="filter-dropdown-toggle">
+                                Genre
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="filter-dropdown-menu" id="genre-dropdown">
+                                <div class="checkbox-item"><input type="checkbox" id="genre-action" value="Action" class="genre-filter"><label for="genre-action">Action</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-comedy" value="Comedy" class="genre-filter"><label for="genre-comedy">Comedy</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-drama" value="Drama" class="genre-filter"><label for="genre-drama">Drama</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-scifi" value="Sci-Fi" class="genre-filter"><label for="genre-scifi">Sci-Fi</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-romance" value="Romance" class="genre-filter"><label for="genre-romance">Romance</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-fantasy" value="Fantasy" class="genre-filter"><label for="genre-fantasy">Fantasy</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-thriller" value="Thriller" class="genre-filter"><label for="genre-thriller">Thriller</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-animation" value="Animation" class="genre-filter"><label for="genre-animation">Animation</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="genre-documentary" value="Documentary" class="genre-filter"><label for="genre-documentary">Documentary</label></div>
+                            </div>
+                        </div>
+                        <button id="back-to-home-btn" class="btn-secondary">Back to Home</button>
+                    </div>
+                </div>
+
+                <div id="movies-grid" class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    </div>
+            </div>
+
+            <footer class="page-footer">
+                <p>&copy; 2025 StraitUp. All rights reserved.</p>
+                <a href="feedback.html" class="text-sm">Give Feedback</a>
+            </footer>
+        </div>
+    </div>
+    
+    <div id="movie-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-button" id="modal-close-btn">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+            <p id="modal-genre" class="text-gray-500 dark:text-gray-400 mb-4"></p>
+            <p id="modal-description" class="description"></p>
+            <div class="mt-6 flex justify-end">
+                <button id="find-buddy-btn" class="btn btn-primary">Find a Watch Buddy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        // A data array to store all movies with their details.
+        const allMovies = [
+            { id: 'movie-a', title: 'Movie A', genre: 'Action, Sci-Fi', description: 'A thrilling action movie with mind-bending sci-fi elements.', language: 'English', status: 'now-showing' },
+            { id: 'movie-b', title: 'Movie B', genre: 'Comedy', description: 'A hilarious comedy about a group of friends on a wild road trip.', language: 'English', status: 'now-showing' },
+            { id: 'movie-c', title: 'Movie C', genre: 'Drama, Romance', description: 'A touching and emotional story of love and loss.', language: 'English', status: 'now-showing' },
+            { id: 'movie-d', title: 'Movie D', genre: 'Fantasy', description: 'An epic journey through a magical land to defeat a dark sorcerer.', language: 'English', status: 'now-showing' },
+            { id: 'movie-e', title: 'Movie E', genre: 'Historical, Action', description: 'A historical epic based on a true story.', language: 'Tamil', status: 'coming-soon' },
+            { id: 'movie-f', title: 'Movie F', genre: 'Musical, Romance', description: 'A dazzling musical with catchy songs and impressive choreography.', language: 'Hindi', status: 'coming-soon' },
+            { id: 'movie-g', title: 'Movie G', genre: 'Horror, Thriller', description: 'A terrifying horror film about a cursed house.', language: 'Telugu', status: 'coming-soon' },
+            { id: 'movie-h', title: 'Movie H', genre: 'Action, Drama', description: 'A movie about a man fighting against injustice.', language: 'Tamil', status: 'now-showing' },
+            { id: 'movie-i', title: 'Movie I', genre: 'Comedy', description: 'An Indian comedy film that will make you laugh out loud.', language: 'Hindi', status: 'now-showing' },
+            { id: 'movie-j', title: 'Movie J', genre: 'Fantasy, Adventure', description: 'A magical journey to save the world.', language: 'Telugu', status: 'coming-soon' },
+        ];
+
+        // --- DOM Elements ---
+        const body = document.body;
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebarBtn = document.querySelector('.close-sidebar-button');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const searchToggleBtn = document.getElementById('search-toggle-btn');
+        const backToHomeBtn = document.getElementById('back-to-home-btn');
+        const carouselView = document.getElementById('carousel-view');
+        const searchView = document.getElementById('search-view');
+
+        const movieSearchInput = document.getElementById('movie-search');
+        const nowShowingCarousel = document.getElementById('now-showing-carousel');
+        const comingSoonCarousel = document.getElementById('coming-soon-carousel');
+        const moviesGridContainer = document.getElementById('movies-grid');
+        const nowShowingPrevBtn = document.getElementById('now-showing-prev');
+        const nowShowingNextBtn = document.getElementById('now-showing-next');
+        const comingSoonPrevBtn = document.getElementById('coming-soon-prev');
+        const comingSoonNextBtn = document.getElementById('coming-soon-next');
+
+        const languageFilters = document.querySelectorAll('.language-filter');
+        const genreFilters = document.querySelectorAll('.genre-filter');
+        const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+        
+        const movieModal = document.getElementById('movie-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalTitle = document.getElementById('modal-title');
+        const modalGenre = document.getElementById('modal-genre');
+        const modalDescription = document.getElementById('modal-description');
+        const findBuddyBtn = document.getElementById('find-buddy-btn');
+
+        let selectedMovieId = null;
+
+        // --- Functions ---
+        
+        // Function to apply the saved theme from local storage
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark-mode') {
+                body.classList.add('dark-mode');
+                themeToggleBtn.innerHTML = '☀️';
+            } else {
+                body.classList.remove('dark-mode');
+                themeToggleBtn.innerHTML = '🌙';
+            }
+        }
+        applySavedTheme();
+
+        // Function to render movie cards for a specific carousel or grid
+        function renderMovies(movies, container) {
+            container.innerHTML = '';
+            if (movies.length === 0) {
+                container.innerHTML = '<p class="text-center w-full" style="color: var(--text-muted);">No movies found matching your criteria.</p>';
+                return;
+            }
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.setAttribute('data-movie-id', movie.id);
+                card.setAttribute('data-movie-title', movie.title);
+                card.setAttribute('data-movie-genre', movie.genre);
+                card.setAttribute('data-movie-lang', movie.language);
+                card.innerHTML = `
+                    <img src="https://placehold.co/256x384/FF69B4/FFFFFF?text=${encodeURIComponent(movie.title)}" alt="${movie.title} Poster" class="rounded-lg mb-3 object-cover w-full h-auto">
+                    <div class="text-center">
+                        <h3 class="font-semibold truncate">${movie.title}</h3>
+                        <p class="text-sm" style="color: var(--text-muted);">${movie.genre}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => showMovieDetails(movie));
+                container.appendChild(card);
+            });
+        }
+
+        // Function to filter and search movies
+        function filterAndRenderMovies() {
+            const searchQuery = movieSearchInput.value.toLowerCase();
+            const selectedLanguages = Array.from(languageFilters).filter(cb => cb.checked).map(cb => cb.value);
+            const selectedGenres = Array.from(genreFilters).filter(cb => cb.checked).map(cb => cb.value);
+
+            const filteredMovies = allMovies.filter(movie => {
+                const matchesSearch = movie.title.toLowerCase().includes(searchQuery);
+                const matchesLanguage = selectedLanguages.length === 0 || selectedLanguages.includes(movie.language);
+                const matchesGenre = selectedGenres.length === 0 || selectedGenres.some(g => movie.genre.includes(g));
+                return matchesSearch && matchesLanguage && matchesGenre;
+            });
+            
+            if (carouselView.classList.contains('hidden')) {
+                 renderMovies(filteredMovies, moviesGridContainer);
+            } else {
+                const nowShowing = allMovies.filter(movie => movie.status === 'now-showing');
+                const comingSoon = allMovies.filter(movie => movie.status === 'coming-soon');
+                renderMovies(nowShowing, nowShowingCarousel);
+                renderMovies(comingSoon, comingSoonCarousel);
+            }
+        }
+
+        // Function to show movie details in a modal
+        function showMovieDetails(movie) {
+            modalTitle.textContent = movie.title;
+            modalGenre.textContent = movie.genre;
+            modalDescription.textContent = movie.description;
+            selectedMovieId = movie.id;
+            movieModal.classList.add('open');
+        }
+        
+        // Generic function to set up carousel
+        function setupCarousel(carousel, prevBtn, nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                // Calculate scroll amount for three movie cards + their gaps
+                const cardWidth = carousel.querySelector('.movie-card')?.offsetWidth || 0;
+                const gap = parseInt(getComputedStyle(carousel).gap) || 0;
+                const scrollAmount = (cardWidth * 3) + (gap * 2); // Three cards + two gaps
+                carousel.scrollLeft += scrollAmount;
+            });
+
+            prevBtn.addEventListener('click', () => {
+                // Calculate scroll amount for three movie cards + their gaps
+                const cardWidth = carousel.querySelector('.movie-card')?.offsetWidth || 0;
+                const gap = parseInt(getComputedStyle(carousel).gap) || 0;
+                const scrollAmount = (cardWidth * 3) + (gap * 2); // Three cards + two gaps
+                carousel.scrollLeft -= scrollAmount;
+            });
+        }
+
+        // --- Event Listeners ---
+
+        // Theme Toggle Functionality
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                themeToggleBtn.innerHTML = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light-mode');
+                themeToggleBtn.innerHTML = '🌙';
+            }
+        });
+
+        // Sidebar Toggle Functionality
+        sidebarToggleBtn.addEventListener('click', () => {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('sidebar-open');
+            body.classList.add('sidebar-open');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('sidebar-open');
+            body.classList.remove('sidebar-open');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('sidebar-open');
+            body.classList.remove('sidebar-open');
+        });
+
+        // Toggle between carousel view and search view
+        searchToggleBtn.addEventListener('click', () => {
+            carouselView.classList.add('hidden');
+            searchView.classList.remove('hidden');
+            filterAndRenderMovies(); // Renders all movies to the grid initially
+        });
+
+        backToHomeBtn.addEventListener('click', () => {
+            searchView.classList.add('hidden');
+            carouselView.classList.remove('hidden');
+            movieSearchInput.value = ''; // Clear search bar
+            languageFilters.forEach(cb => cb.checked = false); // Uncheck filters
+            genreFilters.forEach(cb => cb.checked = false);
+            filterAndRenderMovies(); // Renders movies back to carousels
+        });
+        
+        // "Find a Watch Buddy" button functionality
+        findBuddyBtn.addEventListener('click', () => {
+            console.log(`Finding a watch buddy for movie ID: ${selectedMovieId}`);
+            window.location.href = `matchmaking.html?movie_id=${selectedMovieId}`;
+        });
+
+        // Filter & Search Functionality
+        movieSearchInput.addEventListener('input', filterAndRenderMovies);
+        languageFilters.forEach(cb => cb.addEventListener('change', filterAndRenderMovies));
+        genreFilters.forEach(cb => cb.addEventListener('change', filterAndRenderMovies));
+        
+        // Handle filter dropdowns
+        filterDropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.filter-dropdown-toggle');
+            const menu = dropdown.querySelector('.filter-dropdown-menu');
+            const icon = toggle.querySelector('i');
+
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent the window click listener from immediately closing the dropdown
+                const isOpen = menu.classList.toggle('active');
+                icon.classList.toggle('fa-chevron-up', isOpen);
+                icon.classList.toggle('fa-chevron-down', !isOpen);
+            });
+        });
+        
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', (e) => {
+            filterDropdowns.forEach(dropdown => {
+                const menu = dropdown.querySelector('.filter-dropdown-menu');
+                const toggle = dropdown.querySelector('.filter-dropdown-toggle');
+                const icon = toggle.querySelector('i');
+                if (!dropdown.contains(e.target)) {
+                    menu.classList.remove('active');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+
+        // Modal Event Listeners
+        modalCloseBtn.addEventListener('click', () => {
+            movieModal.classList.remove('open');
+        });
+        movieModal.addEventListener('click', (e) => {
+            if (e.target === movieModal) {
+                movieModal.classList.remove('open');
+            }
+        });
+
+        // Apply carousel setup to both sections
+        setupCarousel(nowShowingCarousel, nowShowingPrevBtn, nowShowingNextBtn);
+        setupCarousel(comingSoonCarousel, comingSoonPrevBtn, comingSoonNextBtn);
+
+        // Initial render of movies on page load
+        filterAndRenderMovies();
+    </script>
+</body>
+</html>
